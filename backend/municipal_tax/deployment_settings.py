@@ -27,17 +27,31 @@ def _to_host(value, default="localhost"):
     return urlparse(origin).netloc
 
 
+def _collect_frontend_origins():
+    """Collect allowed frontend origins from env vars with safe defaults."""
+    raw_urls = os.environ.get('FRONTEND_URLS', '')
+    single_url = os.environ.get('FRONTEND_URL', '')
+
+    values = []
+    if raw_urls.strip():
+        values.extend([item.strip() for item in raw_urls.split(',') if item.strip()])
+    if single_url.strip():
+        values.append(single_url.strip())
+
+    if not values:
+        values.append('https://municipal-puce.vercel.app')
+
+    # Keep order but remove duplicates.
+    deduped = list(dict.fromkeys(values))
+    return [_to_origin(value, default="http://localhost:5173") for value in deduped]
+
+
 # Production URLs
-RENDER_EXTERNAL_HOSTNAME = "municipal-backend-3dc6.onrender.com"
-FRONTEND_URLS = os.environ.get(
-    'FRONTEND_URLS',
-    'https://municipal-puce.vercel.app',
+RENDER_EXTERNAL_HOSTNAME = os.environ.get(
+    'RENDER_EXTERNAL_HOSTNAME',
+    'municipal-backend-3dc6.onrender.com',
 )
-FRONTEND_ORIGINS = [
-    _to_origin(value.strip(), default="http://localhost:5173")
-    for value in FRONTEND_URLS.split(',')
-    if value.strip()
-]
+FRONTEND_ORIGINS = _collect_frontend_origins()
 
 ALLOWED_HOSTS = [_to_host(RENDER_EXTERNAL_HOSTNAME)]
 
@@ -64,6 +78,10 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     *FRONTEND_ORIGINS,
+]
+# Allow preview/stable Vercel deployments for this project naming pattern.
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://municipal-[a-z0-9-]+\.vercel\.app$",
 ]
 
 # Render terminates TLS at the proxy; trust forwarded proto for secure checks.
