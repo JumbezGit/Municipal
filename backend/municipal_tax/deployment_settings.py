@@ -27,16 +27,23 @@ def _to_host(value, default="localhost"):
     return urlparse(origin).netloc
 
 
-# Hardcoded production URLs
+# Production URLs
 RENDER_EXTERNAL_HOSTNAME = "municipal-backend-3dc6.onrender.com"
-FRONTEND_URL = "https://municipal-orpin.vercel.app"
-FRONTEND_ORIGIN = _to_origin(FRONTEND_URL, default="http://localhost:5173")
+FRONTEND_URLS = os.environ.get(
+    'FRONTEND_URLS',
+    'https://municipal-puce.vercel.app,https://municipal-orpin.vercel.app',
+)
+FRONTEND_ORIGINS = [
+    _to_origin(value.strip(), default="http://localhost:5173")
+    for value in FRONTEND_URLS.split(',')
+    if value.strip()
+]
 
 ALLOWED_HOSTS = [_to_host(RENDER_EXTERNAL_HOSTNAME)]
 
 CSRF_TRUSTED_ORIGINS = [
     _to_origin(RENDER_EXTERNAL_HOSTNAME, default="http://localhost"),
-    FRONTEND_ORIGIN,
+    *FRONTEND_ORIGINS,
 ]
 
 DEBUG = False
@@ -56,7 +63,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    FRONTEND_ORIGIN,
+    *FRONTEND_ORIGINS,
 ]
 
 # Render terminates TLS at the proxy; trust forwarded proto for secure checks.
