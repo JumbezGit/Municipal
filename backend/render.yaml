@@ -9,7 +9,7 @@
       - key: DJANGO_SETTINGS_MODULE
         value: municipal_tax.deployment
       - key: DATABASE_URL
-        value: "postgresql://neondb_owner:npg_A2UaSjDFhi1f@ep-nameless-recipe-aizzuqlb-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+        value: "postgresql://neondb_owner:npg_4q0ePAmrnYUt@ep-sparkling-cake-aih74p18-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
       - key: DJANGO_SECRET_KEY
         generateValue: true
       - key: FRONTEND_URL
