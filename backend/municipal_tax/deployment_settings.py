@@ -31,7 +31,7 @@ def _to_host(value, default="localhost"):
 RENDER_EXTERNAL_HOSTNAME = "municipal-backend-3dc6.onrender.com"
 FRONTEND_URLS = os.environ.get(
     'FRONTEND_URLS',
-    'https://municipal-puce.vercel.app,https://municipal-orpin.vercel.app',
+    'https://municipal-puce.vercel.app',
 )
 FRONTEND_ORIGINS = [
     _to_origin(value.strip(), default="http://localhost:5173")
