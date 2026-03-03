@@ -46,6 +46,24 @@ def _collect_frontend_origins():
     return [_to_origin(value, default="http://localhost:5173") for value in deduped]
 
 
+def _collect_allowed_hosts(default_host):
+    """Collect ALLOWED_HOSTS from env, supporting hostnames or URLs."""
+    raw_hosts = os.environ.get('ALLOWED_HOSTS', '')
+    if not raw_hosts.strip():
+        return [_to_host(default_host)]
+
+    hosts = []
+    for value in raw_hosts.split(','):
+        candidate = value.strip()
+        if not candidate:
+            continue
+        if '://' in candidate:
+            hosts.append(_to_host(candidate))
+        else:
+            hosts.append(candidate)
+    return list(dict.fromkeys(hosts))
+
+
 # Production URLs
 RENDER_EXTERNAL_HOSTNAME = os.environ.get(
     'RENDER_EXTERNAL_HOSTNAME',
@@ -53,7 +71,7 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get(
 )
 FRONTEND_ORIGINS = _collect_frontend_origins()
 
-ALLOWED_HOSTS = [_to_host(RENDER_EXTERNAL_HOSTNAME)]
+ALLOWED_HOSTS = _collect_allowed_hosts(RENDER_EXTERNAL_HOSTNAME)
 
 CSRF_TRUSTED_ORIGINS = [
     _to_origin(RENDER_EXTERNAL_HOSTNAME, default="http://localhost"),
