@@ -77,12 +77,13 @@ STORAGES = {
     },
 }
 
-database_url = os.environ.get('DATABASE_URL')
-if database_url:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=database_url,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
+NEON_DATABASE_URL = 'postgresql://neondb_owner:npg_4q0ePAmrnYUt@ep-sparkling-cake-aih74p18-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+
+database_url = os.environ.get('DATABASE_URL', NEON_DATABASE_URL)
+DATABASES = {
+    'default': dj_database_url.config(
+        default=database_url,
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
