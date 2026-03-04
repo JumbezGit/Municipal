@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const FALLBACK_API_BASE_URL = 'https://municipal-backend-3dc6.onrender.com/api'
+const FALLBACK_API_BASE_URL = 'https://municipal-backend-9qmb.onrender.com/api'
 const RAW_API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').trim()
 
 const toApiBaseUrl = (rawValue) => {

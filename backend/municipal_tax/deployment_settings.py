@@ -67,7 +67,7 @@ def _collect_allowed_hosts(default_host):
 # Production URLs
 RENDER_EXTERNAL_HOSTNAME = os.environ.get(
     'RENDER_EXTERNAL_HOSTNAME',
-    'municipal-backend-3dc6.onrender.com',
+    'municipal-backend-9qmb.onrender.com',
 )
 FRONTEND_ORIGINS = _collect_frontend_origins()
 

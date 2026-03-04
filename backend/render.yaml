@@ -17,6 +17,6 @@
       - key: FRONTEND_URLS
         value: https://municipal-puce.vercel.app
       - key: RENDER_EXTERNAL_HOSTNAME
-        value: municipal-backend-3dc6.onrender.com
+        value: municipal-backend-9qmb.onrender.com
       - key: ALLOWED_HOSTS
-        value: municipal-backend-3dc6.onrender.com
+        value: municipal-backend-9qmb.onrender.com
